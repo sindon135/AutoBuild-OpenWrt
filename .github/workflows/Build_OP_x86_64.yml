@@ -66,6 +66,15 @@ jobs:
     #  run: |
     #    git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon-jerrykuku
 
+    - name: Import external feeds - Alist (# Ben's customize)
+      working-directory: ./openwrt
+      run: |
+        rm -rf feeds/packages/lang/golang
+        git clone https://github.com/sbwml/packages_lang_golang -b 23.x feeds/packages/lang/golang
+        git clone https://github.com/sbwml/luci-app-alist package/alist
+        make menuconfig                                  # choose LUCI -> Applications -> luci-app-alist
+        make package/alist/luci-app-alist/compile V=s    # build luci-app-alist
+
     - name: Configuration Customization - Build_x86_64
       env:
         CONFIG_FILE: 'x86_64.config'
